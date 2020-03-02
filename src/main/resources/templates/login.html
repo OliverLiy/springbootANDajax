@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<input type="button" id="btn" value="button">
+<h1>test</h1>
+<script type="text/javascript">
+    var btn=document.getElementById("btn");
+    btn.onclick=function () {
+        //1.创建ajax对象
+        var xhr=new XMLHttpRequest();
+        //2.监听ajax对象
+        xhr.onreadystatechange=function () {
+            /*
+            /当xhr对象的readystate属性发生了改变，这个事件就会触发
+            readyState：
+            0 ===>xhr对象已经创建，但是还没有进行初始化操作
+            1===>xhr对象已经调用了open
+            2===）xhr已经发出ajax请求
+            3 ===>已经返回了部分数据
+            4===>数据已经全部返回
+            */
+            if (xhr.readyState!=4){
+                return;
+            }
+            if (xhr.status>=200&&xhr.status<=300){
+                var result=JSON.parse(xhr.responseText)
+                if (result.res==true){
+                    document.getElementsByTagName("h1")[0].innerHTML="登陆成功";
+                } else {
+                    document.getElementsByTagName("h1")[0].innerHTML="登陆失败";
+                }
+            }
+        }
+        //3.打开对象
+        xhr.open("post","http://localhost:8080/test3",true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        //4.发送请求
+        xhr.send("username=sdxb&password=123456");
+    }
+</script>
+</body>
+</html>
